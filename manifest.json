@@ -1,0 +1,21 @@
+{
+  "name": "Instant Thesaurus",
+  "description": "Find synonyms at the click of a button",
+  "version": "0.1",
+  "permissions": [
+	"contextMenus",
+	"clipboardRead",
+	"clipboardWrite",
+	"http://words.bighugelabs.com/api/2/*"
+  ],
+  "background": {
+    "scripts": ["thesaurus.js"]
+  },
+  "content_scripts": [
+	{
+		"matches": ["<all_urls>"],
+		"js": ["content.js"]
+	}
+  ],
+  "manifest_version": 2
+}
