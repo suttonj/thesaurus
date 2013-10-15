@@ -19,7 +19,7 @@ function find_synonyms(word) {
 	var xhr = new XMLHttpRequest();
 	var url = 'http://words.bighugelabs.com/api/2/9755426f30f005e29bf88afb5186720c/' + word + '/json';
 	var results;
-	var synonyms = [];
+	var synonyms = [], antonyms = [];
 	
 	xhr.open("GET", url, true);
 	xhr.onreadystatechange = function() {
@@ -32,9 +32,15 @@ function find_synonyms(word) {
 						synonyms.push(synonym);
 					});
 				}
-				else if (results.adjective.rel != undefined) {
-					results.adjective.rel.forEach(function(synonym) {
+				else if (results.adjective.usr != undefined) {
+					results.adjective.usr.forEach(function(synonym) {
 						synonyms.push(synonym);
+					});
+				}
+				
+				if (results.adjective.ant != undefined) {
+					results.adjective.ant.forEach(function(antonym) {
+						antonyms.push(antonym);
 					});
 				}
 			}
@@ -44,9 +50,15 @@ function find_synonyms(word) {
 						synonyms.push(synonym);
 					});
 				}
-				else if (results.noun.rel != undefined) {
-					results.noun.rel.forEach(function(synonym) {
+				else if (results.noun.usr != undefined) {
+					results.noun.usr.forEach(function(synonym) {
 						synonyms.push(synonym);
+					});
+				}
+				
+				if (results.noun.ant != undefined) {
+					results.noun.ant.forEach(function(antonym) {
+						antonyms.push(antonym);
 					});
 				}
 			}
@@ -56,9 +68,15 @@ function find_synonyms(word) {
 						synonyms.push(synonym);
 					});
 				}
-				else if (results.verb.rel != undefined) {
-					results.verb.rel.forEach(function(synonym) {
+				else if (results.verb.usr != undefined) {
+					results.verb.usr.forEach(function(synonym) {
 						synonyms.push(synonym);
+					});
+				}
+				
+				if (results.verb.ant != undefined) {
+					results.verb.ant.forEach(function(antonym) {
+						antonyms.push(antonym);
 					});
 				}
 			}
@@ -74,7 +92,31 @@ function find_synonyms(word) {
 					}
 				};
 				smid = chrome.contextMenus.create(suboptions);
+				
 			});
+			
+			if (antonyms.length > 0) {
+				suboptions = {
+					type: "separator",
+					title: "antonyms",
+					parentId: cmid,
+					contexts: ['selection']
+				};
+				smid = chrome.contextMenus.create(suboptions);
+				
+				antonyms.forEach(function(ant) {
+					suboptions = {
+						title: ant,
+						parentId: cmid,
+						contexts: ['selection'],
+						onclick: function(info, tab) {
+							copyTextToClipboard(ant);
+						}
+					};
+					smid = chrome.contextMenus.create(suboptions);
+					
+				});
+			}
 		}
 	};
 	

@@ -16,10 +16,4 @@ document.addEventListener('mouseup', function(e) {
 	}
 }, true);
 
-chrome.extension.onMessage.addListener(function(message,sender,sendResponse){
-  if(message.action == "replaceWithSynonym")
-	
-    alert(message.synonym);
-});
-
 
