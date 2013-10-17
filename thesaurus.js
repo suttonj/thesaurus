@@ -25,60 +25,79 @@ function find_synonyms(word) {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
 			var suboptions;
-			results = JSON.parse(xhr.responseText);
-			if (results.adjective != undefined) {
-				if (results.adjective.syn != undefined) {
-					results.adjective.syn.forEach(function(synonym) {
-						synonyms.push(synonym);
-					});
+			try {
+				results = JSON.parse(xhr.responseText);
+				if (results.adjective != undefined) {
+					if (results.adjective.syn != undefined) {
+						results.adjective.syn.forEach(function(synonym) {
+							synonyms.push(synonym);
+						});
+					}
+					else if (results.adjective.usr != undefined) {
+						results.adjective.usr.forEach(function(synonym) {
+							synonyms.push(synonym);
+						});
+					}
+					
+					if (results.adjective.ant != undefined) {
+						results.adjective.ant.forEach(function(antonym) {
+							antonyms.push(antonym);
+						});
+					}
 				}
-				else if (results.adjective.usr != undefined) {
-					results.adjective.usr.forEach(function(synonym) {
-						synonyms.push(synonym);
-					});
+				if (results.noun != undefined) {
+					if (results.noun.syn != undefined) {
+						results.noun.syn.forEach(function(synonym) {
+							synonyms.push(synonym);
+						});
+					}
+					else if (results.noun.usr != undefined) {
+						results.noun.usr.forEach(function(synonym) {
+							synonyms.push(synonym);
+						});
+					}
+					
+					if (results.noun.ant != undefined) {
+						results.noun.ant.forEach(function(antonym) {
+							antonyms.push(antonym);
+						});
+					}
 				}
-				
-				if (results.adjective.ant != undefined) {
-					results.adjective.ant.forEach(function(antonym) {
-						antonyms.push(antonym);
-					});
+				if (results.verb != undefined) {
+					if (results.verb.syn != undefined) {
+						results.verb.syn.forEach(function(synonym) {
+							synonyms.push(synonym);
+						});
+					}
+					else if (results.verb.usr != undefined) {
+						results.verb.usr.forEach(function(synonym) {
+							synonyms.push(synonym);
+						});
+					}
+					
+					if (results.verb.ant != undefined) {
+						results.verb.ant.forEach(function(antonym) {
+							antonyms.push(antonym);
+						});
+					}
 				}
 			}
-			if (results.noun != undefined) {
-				if (results.noun.syn != undefined) {
-					results.noun.syn.forEach(function(synonym) {
-						synonyms.push(synonym);
-					});
-				}
-				else if (results.noun.usr != undefined) {
-					results.noun.usr.forEach(function(synonym) {
-						synonyms.push(synonym);
-					});
-				}
-				
-				if (results.noun.ant != undefined) {
-					results.noun.ant.forEach(function(antonym) {
-						antonyms.push(antonym);
-					});
-				}
+			catch (err) {
+				suboptions = {
+					title: "No synonyms found.",
+					contexts: ['selection']
+				};
+				chrome.contextMenus.update(cmid, suboptions);
+				return;
 			}
-			if (results.verb != undefined) {
-				if (results.verb.syn != undefined) {
-					results.verb.syn.forEach(function(synonym) {
-						synonyms.push(synonym);
-					});
-				}
-				else if (results.verb.usr != undefined) {
-					results.verb.usr.forEach(function(synonym) {
-						synonyms.push(synonym);
-					});
-				}
-				
-				if (results.verb.ant != undefined) {
-					results.verb.ant.forEach(function(antonym) {
-						antonyms.push(antonym);
-					});
-				}
+			
+			if (synonyms.length == 0 && antonyms.length == 0){
+				suboptions = {
+					title: "No synonyms found.",
+					contexts: ['selection']
+				};
+				chrome.contextMenus.update(cmid, suboptions);
+				return;
 			}
 			
 			var smid; 
