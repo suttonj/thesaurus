@@ -1,4 +1,8 @@
-debugger;
+/**
+* Instant Thesaurus
+* Jeremy Sutton, 2013
+* Chrome Extension - Right-click thesaurus
+**/
 
 var current = null;
 document.addEventListener('mouseup', function(e) {

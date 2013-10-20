@@ -2,6 +2,10 @@
   "name": "Instant Thesaurus",
   "description": "Find synonyms at the click of a button",
   "version": "0.1",
+  "icons": {
+	"16": "icon16.png",
+	"48": "icon48.png"
+  },
   "permissions": [
 	"contextMenus",
 	"clipboardRead",
@@ -10,6 +14,9 @@
   ],
   "background": {
     "scripts": ["thesaurus.js"]
+  },
+  "page_action": {
+    "default_icon": "icon.png"  
   },
   "content_scripts": [
 	{

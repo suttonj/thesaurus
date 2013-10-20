@@ -1,4 +1,8 @@
-
+/**
+* Instant Thesaurus
+* Jeremy Sutton, 2013
+* Chrome Extension - Right-click thesaurus
+**/
 
 // ID to manage the context menu entry
 var cmid;
@@ -25,6 +29,13 @@ function find_synonyms(word) {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
 			var suboptions;
+			//update loading placeholder
+			suboptions = {
+				title: "Synonyms for " + word,
+				contexts: ['selection']
+			};
+			chrome.contextMenus.update(cmid, suboptions);
+				
 			try {
 				results = JSON.parse(xhr.responseText);
 				if (results.adjective != undefined) {
@@ -167,7 +178,7 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
             chrome.contextMenus.removeAll();
 
             var options = {
-                title: "Find synonyms for " + msg.selection,
+                title: "Finding synonyms for " + msg.selection + "...(re-click)",
                 contexts: ['selection'],
                 onclick: cm_clickHandler
             };
