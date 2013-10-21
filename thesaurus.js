@@ -189,4 +189,10 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
 			
         }
     }
+	else if (msg.request == 'clearContextMenu') {
+		if (cmid != null) {
+            chrome.contextMenus.remove(cmid);
+			cmid = null;
+        }
+	}
 });
