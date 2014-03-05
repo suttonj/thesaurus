@@ -1,7 +1,7 @@
 {
   "name": "Instant Thesaurus",
   "description": "Find synonyms at the click of a button",
-  "version": "0.1",
+  "version": "0.3",
   "icons": {
 	"16": "icon16.png",
 	"48": "icon48.png"
@@ -10,7 +10,7 @@
 	"contextMenus",
 	"clipboardRead",
 	"clipboardWrite",
-	"http://words.bighugelabs.com/api/2/*"
+	"http://thesaurus.altervista.org/thesaurus/*"
   ],
   "background": {
     "scripts": ["thesaurus.js"]

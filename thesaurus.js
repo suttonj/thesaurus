@@ -21,10 +21,11 @@ function copyTextToClipboard(text) {
 
 function find_synonyms(word) {
 	var xhr = new XMLHttpRequest();
-	var url = 'http://words.bighugelabs.com/api/2/9755426f30f005e29bf88afb5186720c/' + word + '/json';
+	var params = "key=1HXDg3ab8spFFE0ILgZW&word=" + word + "&language=en_US&output=json";
+	var url = "http://thesaurus.altervista.org/thesaurus/v1?" + params;
 	var results;
 	var synonyms = [], antonyms = [];
-	
+
 	xhr.open("GET", url, true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
@@ -38,60 +39,11 @@ function find_synonyms(word) {
 				
 			try {
 				results = JSON.parse(xhr.responseText);
-				if (results.adjective != undefined) {
-					if (results.adjective.syn != undefined) {
-						results.adjective.syn.forEach(function(synonym) {
-							synonyms.push(synonym);
-						});
-					}
-					else if (results.adjective.usr != undefined) {
-						results.adjective.usr.forEach(function(synonym) {
-							synonyms.push(synonym);
-						});
-					}
-					
-					if (results.adjective.ant != undefined) {
-						results.adjective.ant.forEach(function(antonym) {
-							antonyms.push(antonym);
-						});
-					}
-				}
-				if (results.noun != undefined) {
-					if (results.noun.syn != undefined) {
-						results.noun.syn.forEach(function(synonym) {
-							synonyms.push(synonym);
-						});
-					}
-					else if (results.noun.usr != undefined) {
-						results.noun.usr.forEach(function(synonym) {
-							synonyms.push(synonym);
-						});
-					}
-					
-					if (results.noun.ant != undefined) {
-						results.noun.ant.forEach(function(antonym) {
-							antonyms.push(antonym);
-						});
-					}
-				}
-				if (results.verb != undefined) {
-					if (results.verb.syn != undefined) {
-						results.verb.syn.forEach(function(synonym) {
-							synonyms.push(synonym);
-						});
-					}
-					else if (results.verb.usr != undefined) {
-						results.verb.usr.forEach(function(synonym) {
-							synonyms.push(synonym);
-						});
-					}
-					
-					if (results.verb.ant != undefined) {
-						results.verb.ant.forEach(function(antonym) {
-							antonyms.push(antonym);
-						});
-					}
-				}
+				results.response.forEach(function(list) {
+					list.list.synonyms.split("|").forEach(function(syn) {
+						synonyms.push(syn);
+					});
+				});
 			}
 			catch (err) {
 				suboptions = {
@@ -155,10 +107,7 @@ function find_synonyms(word) {
 
 
 var cm_clickHandler = function(clickData, tab) {
-    //alert('Selected ' + clickData.selectionText + ' in ' + tab.url);
 	var synonyms = find_synonyms(clickData.selectionText);
-	//alert(synonyms);
-
 };
 
 chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
